@@ -1,8 +1,11 @@
 require "forms_autofill/version"
 
 module FormsAutofill
+    require "pdf-forms"
     pdftk = PdfForms.new(Dir.pwd + "/bin/pdftk")
 
+    blank_path = "./db/1010-blank.pdf"
+    indices_path = "./tmp/indices.pdf"
     # Pdf forms commands are all based on SafeShell.execute which takes comma sepearated arguments, and the pdftk binary  - docs here: https://www.pdflabs.com/docs/pdftk-man-page/
 
     # Commands used via command line to fill pdf:
@@ -13,19 +16,19 @@ module FormsAutofill
     #     pdftk.call_pdftk("./db/1010-blank.pdf", "fill_form", "./tmp/sample2.fdf", "output", "./tmp/filled.pdf")
     # will do the same thing as above
 
-    class PdfForms::DataFormat
-        ## to fix format of fdf
-        def to_pdf_data
-            pdf_data = header
-            @data.each do |form_part|
-                pdf_data << field(form_part.name, form_part.value)
-            end  
-            pdf_data << footer
-            return encode_data(pdf_data)
-        end  
-    end  
+    # class PdfForms::DataFormat
+    #     ## to fix format of fdf
+    #     def to_pdf_data
+    #         pdf_data = header
+    #         @data.each do |form_part|
+    #             pdf_data << field(form_part.name, form_part.value)
+    #         end  
+    #         pdf_data << footer
+    #         return encode_data(pdf_data)
+    #     end  
+    # end  
 
-    class PdftkWrapper
+    class PdfForms::PdftkWrapper
 
         def extract_fdf_bin input, output
             self.call_pdftk(input, "generate_fdf", "output", output)
@@ -35,7 +38,83 @@ module FormsAutofill
             #params are input, output, fdf
             self.call_pdftk params[:input], "fill_form", params[:fdf], "output", params[:output]
         end
+    
     end
+
+    class PdfForms::Field
+        # to be able to note some info about fields
+        attr_accessor :meta
+    end
+
+
+
+    #generate fdf with specific values for each key in existing pdf
+    
+    def fill_with_index location, output, pdftk
+        keys = pdftk.get_field_names location
+        indices = Hash.new
+        keys.each_with_index {|key, index| indices[key] = index}
+        pdftk.fill_form location, output, indices
+    end
+
+    class PdfSection
+        attr_reader :name, :fields, :home
+
+        #a section of pdf document - containing info on fields
+        def initialize name, options = {:meta => "", :home => nil, :fields => {}}
+            @name = name
+            @home = options[:home]
+            @meta = options[:meta]
+            @fields = options[:fields]
+        end
+
+        # def initialize name, options = {}
+        #     defaults = {:meta => "", :home => PdfForms::Pdf.new, :fields => Hash.new}
+        #     options = defaults.merge(options)
+        #     @name = name
+        #     @home = options[:home]
+        #     @meta = options[:meta]
+        #     @fields = options[:fields]
+        # end
+
+        def add_field field, options={:meta => nil}
+            if home
+                id = @home.fields.index(field)
+                @fields[id] = field
+                if options[:meta]
+                    field.meta = options[:meta] 
+                end
+            else
+                @fields[field.name] = field
+            end
+        end
+
+        def include? section
+            (section.class == self.class && section.subsection?(self) ) ? true : false
+        end
+
+        def subsection? section
+            (@home == section.home && @fields.all? {|id, field| section.fields[id] == field}) ? true : false
+        end
+
+        def == section
+            self.subsection? section && section.subsection? self ? true : false
+        end
+
+        # def truthcondition &prc
+        #     status = nil
+        #     prc ? status = true : status = false
+        #     status
+        # end
+
+    end
+
+pdf object - has fields
+
+add sections
+
+
+
   # Your code goes here...
 end
 
