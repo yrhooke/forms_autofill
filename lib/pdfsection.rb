@@ -36,7 +36,7 @@ module FormsAutofill
             @fields.each {|id, field| field.value = value}
         end
 
-        def add_by_num num
+        def add_field_by_num num
             add_field home.fields[num]
         end
 
@@ -68,6 +68,8 @@ module FormsAutofill
             end
             new_section
         end
+
+        
         # def roles
         #     @roles ? @roles : @roles = template.role_hash
         # end

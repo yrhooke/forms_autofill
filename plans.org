@@ -1,48 +1,6 @@
-
-#what do we want to do:
-
-#we want to be able to extract an fdf template from a filled in pdf
-#We want template to remember from what pdf as well
-#We want to be able to add fdf template to pdf to fill it.
-#we want to be able to add fields to fdf template
-
-
-so: 
-
-stage 1:
-1. extract fdf object from pdf
-2. save fdf object
-3. use existing fdf object or a file it's from to add info to pdf
-
-
-stage 2: edit fdf object + standardize ways to do so.
-1. create fdf template object - remembers what pdf it's from. 
-2. fdf template should know which fields in fdf have same/similar information
-3. have methods for auto-filling in these fields based on some input. 
-4. 
-
-stage 3: web server
-
-stage 4: be able to add new forms easily
-objects: 
-
-pdf - a form with all the info/visuals
-fdf - just the form information for a pdf
-
-we manipulate fdf, and eventually write to pdf
-
-what manipulation do we do to fdf?
-
-    we change the value of some entries in fdf's @data
-
-that's basic level
-
-to change 1010 form we need to insert some info to the appropriate places:
-    name, DOB, entry date, address, alien ID number
-
-to do this well we want to:
-    1. know what places are important - per form (1010)
-    2. have a function to fill them in
-
-let's deal with filling them in later. 
-
+1. set up automatic testing with rspec (maybe find an ide?)
+2. set up defaults - so it will be easy to store them (can implement as array of sections?)
+3. fix formController to support defaults
+4. provide support for objects that are split up in regular ways - phone number being 3 different fields
+5. fix formController to support split up objects
+6. basic web server. 
