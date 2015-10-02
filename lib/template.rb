@@ -24,31 +24,7 @@
     end
 
 
-#     # left hand: json that says first, middle, and last name.
-#     # right hand: my sections + templates
-#     # action: take left hand and map to right hand correctly, including duplicates
 
-#     def feed info, form
-#         info.each do |role, value|
-#             form.fields.each do |field| 
-#                 if field.role == role
-#                     field.value = value
-#                 end
-#             end
-#         end
-
-#     end
-
-#     def make_hash pdf
-#         newvals = Hash.new
-#         pdf.fields.map {|field| newvals[field.name.to_sym] = field.value}
-#         newvals
-#     end
-
-#     #then pdftk.fill_form input, output_path, (result of make_hash)
-
-
-# end
 
 
 # # class AssignmentTree

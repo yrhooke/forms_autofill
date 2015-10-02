@@ -11,7 +11,7 @@ module FormsAutofill
         require "pdf-forms"
         attr_reader :sections
 
-        @@pdftk_path = Dir.pwd + "/bin/pdftk"
+        @@pdftk_path = puts File.realpath(__dir__) + "/../bin/pdftk"
 
         def initialize form
             @pdftk = PdfForms.new @@pdftk_path
@@ -40,7 +40,7 @@ module FormsAutofill
             end
         end
 
-        def add_section section
+        def add_section  section
             @sections << section.to_json
         end
 
