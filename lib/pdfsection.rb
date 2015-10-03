@@ -5,8 +5,8 @@ module FormsAutofill
 
   class PdfSection
     require "json"
-    require "utils"
-    
+    require "utils" # to cange PdfForms::Field attributes to access meta + role
+
     attr_reader :name, :fields, :home, :meta
     attr_accessor :role
 
@@ -36,14 +36,14 @@ module FormsAutofill
       {
         :pdf => @home.path,
         :name => @name,
-        :role => @role
+        :role => @role,
         :meta => @meta,
-        :fields => @fields.map {|key, value| key}
+        :fields => @fields.map{|key, value| key}
       }.to_json
     end
 
 
-    def assign 
+    def assign! 
       fields.each{|id, field| field.role = @role}
     end
 
@@ -63,10 +63,11 @@ module FormsAutofill
     end
 
     def self.from_hash input_hash, home
-      parsed = JSON.parse(input_hash)
-      new_section = PdfSection.new :name => parsed["name"], :home => home
-
-      parsed["fields"].each do |id|
+      new_section = PdfSection.new home, 
+        :name => input_hash["name"],
+        :meta => input_hash["meta"],
+        :role => input_hash["role"]
+      input_hash["fields"].each do |id|
         new_section.add_field home.fields[id]
       end
       new_section
