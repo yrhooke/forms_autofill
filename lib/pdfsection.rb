@@ -60,7 +60,10 @@ module FormsAutofill
       }.to_json
     end
 
-
+    def to_hash
+      JSON.parse (self.to_json)
+    end
+    
     def self.from_json input_json, home
       ## __IMPORTANT: do we need this?
       parsed = JSON.parse(input_json)
