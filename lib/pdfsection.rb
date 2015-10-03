@@ -5,15 +5,19 @@ module FormsAutofill
 
   class PdfSection
     require "json"
+    require "utils"
+    
     attr_reader :name, :fields, :home, :meta
+    attr_accessor :role
 
     #a section of pdf document - containing info on fields
     def initialize home, options = {}
-      defaults = {:name => "", :meta => ""}#:template => nil}
+      defaults = {:name => "", :meta => "", :role => nil}#:template => nil}
       options = defaults.merge(options)
       @name = options[:name]
       @home = home #a Pdf object
       @meta = options[:meta]
+      @role = options[:role]
       @fields = {}
       if @home.class != PdfForms::Pdf
         raise TypeError, "home Pdf is not a Pdf object"
@@ -21,29 +25,6 @@ module FormsAutofill
       end
     end
 
-    # def add_field_by_num num
-    #   begin
-    #     to_add = home.fields[num]
-    #     add_field(to_add)
-    #   rescue Exception => e
-    #     message = ""
-    #     if num.class == Fixnum
-    #       message = "Make sure #{num} is in range\n"
-    #     end
-    #     raise e.type (e.message + message)
-    #   end
-    #   @fields
-    # end
-
-    #     def add_field field
-    #   if field.class == PdfForms::Field
-    #     id = @home.fields.index(field)
-    #     @fields[id] = field
-    #   else
-    #     raise TypeError
-    #     nil
-    #   end
-    # end
 
     def add_field_by_num num
       raise TypeError unless num.class == Fixnum
@@ -55,15 +36,21 @@ module FormsAutofill
       {
         :pdf => @home.path,
         :name => @name,
+        :role => @role
         :meta => @meta,
         :fields => @fields.map {|key, value| key}
       }.to_json
     end
 
+
+    def assign 
+      fields.each{|id, field| field.role = @role}
+    end
+
     def to_hash
       JSON.parse (self.to_json)
     end
-    
+
     def self.from_json input_json, home
       ## __IMPORTANT: do we need this?
       parsed = JSON.parse(input_json)
@@ -104,19 +91,9 @@ module FormsAutofill
     #     raise 
     #   rescue field.class PdfForms::Field
     #     return nil
-    # def roles
-    #     @roles ? @roles : @roles = template.role_hash
-    # end
 
-    # def roles= input
-    #     @roles = input
-    # end
 
-    # def assign 
-    #     @roles.each do |role, field|
-    #         field.role = role
-    #     end
-    # end
+ 
 
     # def include? section
     #     (section.class == self.class && section.subsection?(self) ) ? true : false

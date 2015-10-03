@@ -206,6 +206,87 @@ describe PdfSection do
  
   end
 
+
+  describe "#to_hash" do
+    let (:input) {{}}
+    let (:defaults) { {
+      :pdf => double('PDF', :class => PdfForms::Pdf, :path => "./pdftk"),
+      :name => nil,
+      :meta => nil,
+      :fields => nil
+    } }
+    let(:params) { defaults.merge(input) }
+    let(:home) { params[:pdf] }
+    let(:section) do
+      section = PdfSection.new home, name: params[:name], meta: params[:meta]
+      if params[:fields]
+          params[:fields].each { |i| section.add_field_by_num(i) }
+      end
+      section
+    end
+    subject(:result) { section.to_hash }
+
+    shared_examples "hash result" do
+      # let (:defaults) { {
+      #   :pdf => double('PDF', :class => PdfForms::Pdf),
+      #   :name => nil,
+      #   :meta => nil,
+      #   :fields => nil
+      # } }
+      # let(:params) { defaults.merge(params) }
+      # let(:home) { params[:pdf] }
+      # let(:section) do
+      #   section = PdfSection.new home, name: params[:name], meta: params[:meta]
+      #   params[:fields].each do |i|
+      #     section.add_field_by_num(i)
+      #   end
+      #   section
+      # end
+      # subject(:result) { section.to_json }
+
+      it "returns a hash" do
+        expect(result).to be_instance_of(Hash)
+      end
+
+      it "name field matches object" do
+        expect(result["name"]).to eq(section.name)
+      end
+
+      it "meta field matches object" do
+        expect(result["meta"]).to eq(section.meta)
+      end
+
+      it "role field matches object" do
+        expect(result["role"]).to eq(section.role)
+      end
+
+      it "includes all field indices" do
+        expect(result["fields"]).to eq(section.fields.keys)
+      end
+    end
+
+
+    context "blank_hash" do 
+      it_behaves_like "hash result"
+    end
+
+    context "name and meta but no fields" do
+      let(:input) { {:name => "Jelly", :meta => "beans"} }
+      it_behaves_like "hash result"
+    end
+
+    context "role added"
+
+    context "with fields" do
+      let(:input) {{:fields => [1, 3, 4], :pdf => sample_pdf}}
+      it_behaves_like "hash result"
+    end
+ 
+  end
+
+  describe "#assign!" do
+  end
+
   describe "::from_json" do
     it "creates PdfSection" 
 
@@ -214,5 +295,6 @@ describe PdfSection do
   end
 
   describe "::from_hash" 
+
 
 end
