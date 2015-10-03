@@ -1,6 +1,6 @@
-1. set up automatic testing with rspec (maybe find an ide?)
 2. set up defaults - so it will be easy to store them (can implement as array of sections?)
 3. fix formController to support defaults
-4. provide support for objects that are split up in regular ways - phone number being 3 different fields
+4. provide support for MultiSections - phone number being 3 different fields
 5. fix formController to support split up objects
-6. basic web server. 
+6. set up installer
+7. basic web server. 
