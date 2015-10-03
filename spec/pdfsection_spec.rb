@@ -287,14 +287,12 @@ describe PdfSection do
   describe "#assign!" do
   end
 
-  describe "::from_json" do
+  describe "::from_hash" do
     it "creates PdfSection" 
 
     it "accepts result of to_json" 
 
-  end
-
-  describe "::from_hash" 
+  end 
 
 
 end

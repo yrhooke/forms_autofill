@@ -51,19 +51,11 @@ module FormsAutofill
       JSON.parse (self.to_json)
     end
 
-    def self.from_json input_json, home
-      ## __IMPORTANT: do we need this?
-      parsed = JSON.parse(input_json)
-      new_section = PdfSection.new :name => parsed["name"], :home => home
 
-      parsed["fields"].each do |id|
-        new_section.add_field home.fields[id]
-      end
-      new_section
-    end
 
     def self.from_hash input_hash, home
-      new_section = PdfSection.new home, 
+      new_section = PdfSection.new 
+        home, 
         :name => input_hash["name"],
         :meta => input_hash["meta"],
         :role => input_hash["role"]
