@@ -75,20 +75,23 @@ describe PdfSection do
     let(:prev_fields) {{}} # __ISSUE : depends on subject(:section) value
 
     shared_examples "wrong input" do |input, error_type|
-      before(:each) { section.add_field_by_num(input) }
 
       it "raises an error" do
         expect{section.add_field_by_num input}.to raise_error(error_type)
       end
 
       it "adds nothing" do
-        section.add_field_by_num input
+        begin 
+          section.add_field_by_num input
+        rescue
+          nil
+        end
         expect(section.fields).to eq prev_fields
       end
     end
     
-    it "returns fields method" do
-      expect { section.add_field_by_num(1) }.to eq {section.fields}
+    it "returns added field" do
+      expect(section.add_field_by_num(1)).to eq (home.fields[1])
     end
 
     context "add sample_pdf's 10th field" do
@@ -133,7 +136,59 @@ describe PdfSection do
   end
 
   describe "#to_json" do
-    it "returns a json" 
+    
+
+    shared_examples "json result" do |params|
+      let (:defaults) { {
+        :pdf => double('PDF', :class => PdfForms::Pdf),
+        :name => nil,
+        :meta => nil,
+        :fields => nil
+      } }
+      let(:params) { defaults.merge(params) }
+      let(:home) { params[:pdf] }
+      let(:section) do
+        section = PdfSection.new home, name: params[:name], meta: params[:meta]
+        params[:fields].each do |i|
+          section.add_field_by_num(i)
+        end
+        section
+      end
+      subject(:result) { section.to_json }
+
+      it "returns a json" do
+        expect(result).to be_instance_of(JSON)
+      end
+
+      it "name field matches object" do
+        expect(result[:name]).to eq(section.name)
+      end
+
+      it "meta field matches object" do
+        expect(result[:meta]).to eq(section.meta)
+      end
+
+      it "includes all field incides" do
+        expect(result[:fields]).to eq(section.fields.keys)
+      end
+    end
+
+    context "blank_json" do 
+      it_behaves_like "test json", {}
+    end
+
+    context "name and meta but no fields" do
+      it_behaves_like "test json", {
+        :name => "Jelly",
+        :meta => "beans"
+      }
+    end
+
+    context "with fields" do
+      let(:params) {{:fields => [1, 3, 4], :pdf => sample_pdf}}
+      it_behaves_like "test json", params
+    end
+ 
   end
 
   describe "::from_json" do

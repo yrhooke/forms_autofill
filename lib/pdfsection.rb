@@ -21,8 +21,34 @@ module FormsAutofill
       end
     end
 
+    # def add_field_by_num num
+    #   begin
+    #     to_add = home.fields[num]
+    #     add_field(to_add)
+    #   rescue Exception => e
+    #     message = ""
+    #     if num.class == Fixnum
+    #       message = "Make sure #{num} is in range\n"
+    #     end
+    #     raise e.type (e.message + message)
+    #   end
+    #   @fields
+    # end
+
+    #     def add_field field
+    #   if field.class == PdfForms::Field
+    #     id = @home.fields.index(field)
+    #     @fields[id] = field
+    #   else
+    #     raise TypeError
+    #     nil
+    #   end
+    # end
+
     def add_field_by_num num
-      add_field home.fields[num]
+      raise TypeError unless num.class == Fixnum
+      raise RangeError, "#{num} out of range." if num >= home.fields.length
+      @fields[num] = @home.fields[num]
     end
 
     def to_json
@@ -56,25 +82,23 @@ module FormsAutofill
 
   private
 
-    def add_field field, options={:meta => nil}
-      if home
+    def add_field field
+      if field.class == PdfForms::Field
         id = @home.fields.index(field)
         @fields[id] = field
-        if options[:meta]
-          field.meta = options[:meta] 
-        end
       else
-        @fields[field.name] = field
+        raise TypeError
+        nil
       end
     end
 
-    
-    def get_field id
-      begin
-        field = @home.fields.index(id)
-        raise 
-      rescue field.class PdfForms::Field
-        return nil
+
+    # def get_field id
+    #   begin
+    #     field = @home.fields.index(id)
+    #     raise 
+    #   rescue field.class PdfForms::Field
+    #     return nil
     # def roles
     #     @roles ? @roles : @roles = template.role_hash
     # end
