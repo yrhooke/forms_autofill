@@ -31,15 +31,27 @@ describe FormController do
       it_behaves_like "sections added"
     end
 
+    context "section from different owner"
+
+    context "section is string"
+
+    context "section is hash of other items"
+
+    context "section is array of other items"
+
   end 
 
   describe "#assign!"
 
     it "assigns all sections"
 
+    it "assigns nothing else"
+
   describe "#fill!"
 
     it "fills all values"
+
+    it "fills nothing else"
 
   describe "#write"
 
