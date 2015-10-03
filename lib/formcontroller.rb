@@ -45,6 +45,7 @@ module FormsAutofill
     end
 
     def fill! info
+      #should ultimately handle Defaults, Sections, and MultiSections
       info.each do |role, value|
         @fields.each do |field| 
           if field.role == role
@@ -56,6 +57,16 @@ module FormsAutofill
 
     def write values, destination
       pdftk.fill_form @form.path , destination, make_hash
+    end
+
+    def self.read_defaults form
+      #shoudl return Controller with defaults preset with values in form
+      #this hash should be readable to FormController
+      #making the processing of a new pdf - filling it with all the values you
+      #don't change + reading. Then finding locations of values you do change 
+      # and defining sections on those values - should add a cleanup method
+      # then exporting this whole thing into something. so you can with one command
+      # know for a particular form what values need to be filled. 
     end
   
 
