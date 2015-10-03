@@ -55,12 +55,14 @@ module FormsAutofill
       {
         :pdf => @home.path,
         :name => @name,
-        :description => @meta,
+        :meta => @meta,
         :fields => @fields.map {|key, value| key}
       }.to_json
     end
 
+
     def self.from_json input_json, home
+      ## __IMPORTANT: do we need this?
       parsed = JSON.parse(input_json)
       new_section = PdfSection.new :name => parsed["name"], :home => home
 

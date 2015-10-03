@@ -136,57 +136,72 @@ describe PdfSection do
   end
 
   describe "#to_json" do
-    
-
-    shared_examples "json result" do |params|
-      let (:defaults) { {
-        :pdf => double('PDF', :class => PdfForms::Pdf),
-        :name => nil,
-        :meta => nil,
-        :fields => nil
-      } }
-      let(:params) { defaults.merge(params) }
-      let(:home) { params[:pdf] }
-      let(:section) do
-        section = PdfSection.new home, name: params[:name], meta: params[:meta]
-        params[:fields].each do |i|
-          section.add_field_by_num(i)
-        end
-        section
+    let (:input) {{}}
+    let (:defaults) { {
+      :pdf => double('PDF', :class => PdfForms::Pdf, :path => "./pdftk"),
+      :name => nil,
+      :meta => nil,
+      :fields => nil
+    } }
+    let(:params) { defaults.merge(input) }
+    let(:home) { params[:pdf] }
+    let(:section) do
+      section = PdfSection.new home, name: params[:name], meta: params[:meta]
+      if params[:fields]
+          params[:fields].each { |i| section.add_field_by_num(i) }
       end
-      subject(:result) { section.to_json }
+      section
+    end
+    subject(:result) { JSON.parse(section.to_json) }
+
+    shared_examples "json result" do
+      # let (:defaults) { {
+      #   :pdf => double('PDF', :class => PdfForms::Pdf),
+      #   :name => nil,
+      #   :meta => nil,
+      #   :fields => nil
+      # } }
+      # let(:params) { defaults.merge(params) }
+      # let(:home) { params[:pdf] }
+      # let(:section) do
+      #   section = PdfSection.new home, name: params[:name], meta: params[:meta]
+      #   params[:fields].each do |i|
+      #     section.add_field_by_num(i)
+      #   end
+      #   section
+      # end
+      # subject(:result) { section.to_json }
 
       it "returns a json" do
-        expect(result).to be_instance_of(JSON)
+        expect(result).to be_instance_of(Hash)
       end
 
       it "name field matches object" do
-        expect(result[:name]).to eq(section.name)
+        expect(result["name"]).to eq(section.name)
       end
 
       it "meta field matches object" do
-        expect(result[:meta]).to eq(section.meta)
+        expect(result["meta"]).to eq(section.meta)
       end
 
       it "includes all field incides" do
-        expect(result[:fields]).to eq(section.fields.keys)
+        expect(result["fields"]).to eq(section.fields.keys)
       end
     end
 
+
     context "blank_json" do 
-      it_behaves_like "test json", {}
+      it_behaves_like "json result"
     end
 
     context "name and meta but no fields" do
-      it_behaves_like "test json", {
-        :name => "Jelly",
-        :meta => "beans"
-      }
+      let(:input) { {:name => "Jelly", :meta => "beans"} }
+      it_behaves_like "json result"
     end
 
     context "with fields" do
-      let(:params) {{:fields => [1, 3, 4], :pdf => sample_pdf}}
-      it_behaves_like "test json", params
+      let(:input) {{:fields => [1, 3, 4], :pdf => sample_pdf}}
+      it_behaves_like "json result"
     end
  
   end
