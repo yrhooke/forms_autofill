@@ -39,6 +39,8 @@ describe FormController do
 
     context "section is array of other items"
 
+    context "section doesn't exist in owner"
+
   end 
 
   describe "#assign!"

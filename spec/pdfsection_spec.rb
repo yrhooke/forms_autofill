@@ -11,6 +11,8 @@ describe PdfSection do
     PdfForms::Pdf.new blank_path, pdftk
   end
 
+  it "deals with role well"
+  
   describe "#new" do
 
     context "home properly formatted" do 

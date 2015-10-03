@@ -54,8 +54,7 @@ module FormsAutofill
 
 
     def self.from_hash input_hash, home
-      new_section = PdfSection.new 
-        home, 
+      new_section = PdfSection.new home, 
         :name => input_hash["name"],
         :meta => input_hash["meta"],
         :role => input_hash["role"]
