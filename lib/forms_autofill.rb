@@ -1,6 +1,7 @@
 require "forms_autofill/version"
 require "utils"
 require "pdfsection"
+require "default"
 require "formcontroller"
 
 module FormsAutofill
@@ -102,10 +103,10 @@ module FormsAutofill
   #     mysections
   # end
 
-  def save_sections sections
-    result = sections.map {|section| section.to_json}
-    result.to_json
-  end
+  # def save_sections sections
+  #   result = sections.map {|section| section.to_json}
+  #   result.to_json
+  # end
 
   # def write from_pdf, sections, values, result_pdf, pdftk
   #     #values is a hash of values, sections is an array hashes - each is PdfSection's to_json.

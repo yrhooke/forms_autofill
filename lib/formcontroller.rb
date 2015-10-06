@@ -17,9 +17,9 @@ module FormsAutofill
 
     @@pdftk_path = puts File.realpath(__dir__) + "/../bin/pdftk"
 
-    def initialize form
+    def initialize form_path
       @pdftk = PdfForms.new @@pdftk_path
-      @form = PdfForms::Pdf.new form, @pdftk
+      @form = PdfForms::Pdf.new form_path, @pdftk
       @fields = @form.fields
       @sections = []
     end
@@ -42,7 +42,7 @@ module FormsAutofill
       @fields.each_with_index do |field, index|
         newsection = Default.new @form
         newsection.add_field index
-        add_section section
+        add_section(newsection)
       end
       @sections
     end

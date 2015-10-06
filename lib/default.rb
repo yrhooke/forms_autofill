@@ -1,8 +1,46 @@
 module FormsAutofill
+  
+  class Section
+    attr_reader :value
+
+    def initialize home
+      @home = home
+    end
+
+    @@HASHABLE = [] # attributes to be converted to/from hash
+
+    def assign!
+      #give relevant fields the relevant value
+    end
+
+    def to_hash
+    # # TEMPLATE:
+    #   {
+    #     :pdf => @home.path,
+    #     :name => @name,
+    #     :role => @role,
+    #     :meta => @meta,
+    #     :fields => @fields.map{|key, value| key}
+    #   }
+    end
+
+    def self.from_hash input_hash, home
+    # # Template:
+    #   new_section = PdfSection.new home, 
+    #     :name => input_hash["name"],
+    #     :meta => input_hash["meta"],
+    #     :role => input_hash["role"]
+    #   input_hash["fields"].each do |id|
+    #     new_section.add_field home.fields[id]
+    #   end
+    #   new_section
+    end
+  end
+
 
   class Default < Section ## will need to abstract pdfsection as well
 
-    def initialize home, #method, id
+    def initialize home #method, id
       # methods = [:num, :name, :field]
       # raise ArgumentError unless methods.include? method
       @home = home
@@ -10,16 +48,17 @@ module FormsAutofill
       # @value = @fields[0].value
     end
 
-    def add_field(method, id)
-      methods = [:num, ]#:name, :field]
-      unless methods.include? method
-        return nil
-      elsif method == :num
-        id, field = get_field_by_num( num )
+    def add_field(id)
+      # methods = [:num, ]#:name, :field]
+      # unless methods.include? method
+      #   return nil
+      # end
+      # if method == :num
+        field = get_field_by_num( id )
         @id = id
         @field = field
-      end
-      @id, @field
+      # end
+      return @id, @field
     end
 
     def fields
@@ -34,7 +73,7 @@ module FormsAutofill
 
     def get_field_by_num num
       field = @home.fields[num]
-      id, field
+      return field
     end
 
     # def get_field_by_name name
@@ -94,42 +133,6 @@ module FormsAutofill
     # Then it has an assign! method to make each section assign its proper value,
     # Then write outputs to document. 
 
-  class Section
-    attr_reader :value
-
-    def initialize home
-      @home = home
-    end
-
-    @@HASHABLE = [] # attributes to be converted to/from hash
-
-    def assign!
-      #give relevant fields the relevant value
-    end
-
-    def to_hash
-    # # TEMPLATE:
-    #   {
-    #     :pdf => @home.path,
-    #     :name => @name,
-    #     :role => @role,
-    #     :meta => @meta,
-    #     :fields => @fields.map{|key, value| key}
-    #   }
-    end
-
-    def self.from_hash input_hash, home
-    # # Template:
-    #   new_section = PdfSection.new home, 
-    #     :name => input_hash["name"],
-    #     :meta => input_hash["meta"],
-    #     :role => input_hash["role"]
-    #   input_hash["fields"].each do |id|
-    #     new_section.add_field home.fields[id]
-    #   end
-    #   new_section
-    end
-  end
 
 end
 
