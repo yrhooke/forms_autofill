@@ -13,7 +13,7 @@ module FormsAutofill
 
   class FormController
     require "pdf-forms"
-    attr_reader :sections
+    attr_accessor :sections
 
     @@pdftk_path = puts File.realpath(__dir__) + "/../bin/pdftk"
 
@@ -24,37 +24,58 @@ module FormsAutofill
       @sections = []
     end
 
-    def add_section  section
-      #__NOTE: should accept any kind of section, not just PdfSection
-      if section.class == PdfSection
-        add_section_object section
-      elsif section.class == Hash
-        add_section_hash section
-      elsif section.class == Array
-        add_section_arr section
-      else
-        raise TypeError, "section(s)' class not recognized"
+    # def add_section  section
+    #   #__NOTE: should accept any kind of section, not just PdfSection
+    #   if section.class == PdfSection
+    #     add_section_object section
+    #   elsif section.class == Hash
+    #     add_section_hash section
+    #   elsif section.class == Array
+    #     add_section_arr section
+    #   else
+    #     raise TypeError, "section(s)' class not recognized"
+    #   end
+    #   @sections
+    # end
+
+    def create_defaults
+      @fields.each_with_index do |field, index|
+        newsection = Default.new @form
+        newsection.add_field index
+        add_section section
       end
       @sections
     end
 
-    def assign! 
-      @sections.each do |section|
-        new_section = PdfSection.from_hash section, @form
-        new_section.assign!
-      end
+    def add_section section
+      @sections << section
     end
 
-    def fill! info
-      #should ultimately handle Defaults, Sections, and MultiSections
-      info.each do |role, value|
-        @fields.each do |field| 
-          if field.role == role
-            field.value = value
-          end
-        end
-      end
+    # can change and remove sections manually for now
+
+    def export
+      @sections.map {|section| section.fields}
     end
+
+
+    # def assign! 
+    #   @sections.each do |section|
+    #     section.assign!
+    #     new_section = PdfSection.from_hash section, @form
+    #     new_section.assign!
+    #   end
+    # end
+
+    # def fill! info
+    #   #should ultimately handle Defaults, Sections, and MultiSections
+    #   info.each do |role, value|
+    #     @fields.each do |field| 
+    #       if field.role == role
+    #         field.value = value
+    #       end
+    #     end
+    #   end
+    # end
 
     def write values, destination
       pdftk.fill_form @form.path , destination, make_hash

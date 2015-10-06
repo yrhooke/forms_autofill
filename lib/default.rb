@@ -69,9 +69,16 @@ module FormsAutofill
 
     def assign! value
       @mapping.each do |map|
-        @mapping[map].value = value[map]
+        @mapping[map].assign!(value[map]) # it's a section
       end
     end
+
+    def fields
+      @mapping
+    end
+
+
+  end
 
 
 
@@ -86,8 +93,6 @@ module FormsAutofill
     # it should also have a method for adding values to sections that don't have one,
     # Then it has an assign! method to make each section assign its proper value,
     # Then write outputs to document. 
-
-  end
 
   class Section
     attr_reader :value
