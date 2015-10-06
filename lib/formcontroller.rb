@@ -53,7 +53,7 @@ module FormsAutofill
 
     def sub_section section
       #removes all defaults with section fields
-
+    end
 
     # can change and remove sections manually for now
 
@@ -69,13 +69,14 @@ module FormsAutofill
         new_section.assign!
       end
     end
-    def assign! valueset
-      @sections.each do |section|
-        section.assign!
-        new_section = PdfSection.from_hash section, @form
-        new_section.assign!
-      end
-    end
+
+    # def assign! valueset
+    #   @sections.each do |section|
+    #     section.assign!
+    #     new_section = PdfSection.from_hash section, @form
+    #     new_section.assign!
+    #   end
+    # end
 
 
 # input of assign! here should be same as output of make_hash.
