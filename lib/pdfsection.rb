@@ -17,7 +17,8 @@ module FormsAutofill
       @name = options[:name]
       @home = home #a Pdf object
       @meta = options[:meta]
-      @role = options[:role]
+      # @role = options[:role]
+      @value = nil # value is the assigned value
       @fields = {}
       if @home.class != PdfForms::Pdf
         raise TypeError, "home Pdf is not a Pdf object"
@@ -32,19 +33,9 @@ module FormsAutofill
       @fields[num] = @home.fields[num]
     end
 
-    def to_json
-      {
-        :pdf => @home.path,
-        :name => @name,
-        :role => @role,
-        :meta => @meta,
-        :fields => @fields.map{|key, value| key}
-      }.to_json
-    end
 
-
-    def assign! 
-      fields.each{|id, field| field.role = @role}
+    def assign! value
+      fields.each{|id, field| field.value = value}
     end
 
     def to_hash
@@ -74,6 +65,16 @@ module FormsAutofill
         raise TypeError
         nil
       end
+    end
+
+    def to_json
+      {
+        :pdf => @home.path,
+        :name => @name,
+        :role => @role,
+        :meta => @meta,
+        :fields => @fields.map{|key, value| key}
+      }.to_json
     end
 
 

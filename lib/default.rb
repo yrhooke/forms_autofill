@@ -1,31 +1,79 @@
 module FormsAutofill
 
   class Default < Section ## will need to abstract pdfsection as well
-    attr_reader :fields
 
-    def initialize home, method, id
-      methods = [:num, :name, :field]
-      raise ArgumentError unless methods.include? method
+    def initialize home, #method, id
+      # methods = [:num, :name, :field]
+      # raise ArgumentError unless methods.include? method
       @home = home
-      @fields = get_field(method, id)
-      @value = @fields[0].value
+      # @fields = get_field(method, id)
+      # @value = @fields[0].value
+    end
+
+    def add_field(method, id)
+      methods = [:num, ]#:name, :field]
+      unless methods.include? method
+        return nil
+      elsif method == :num
+        id, field = get_field_by_num( num )
+        @id = id
+        @field = field
+      end
+      @id, @field
+    end
+
+    def fields
+      {@id => @field}
+    end
+
+    def assign! value
+      @field.value = value
     end
 
   private
-    def get_field(method, id)
-      #gets the field per method
-      #returns hash {num => field}
+
+    def get_field_by_num num
+      field = @home.fields[num]
+      id, field
     end
+
+    # def get_field_by_name name
+    #   id = @home.field.index(name)
+    #   #gets the field per method
+    #   #returns hash {num => field}
+    # end
 
   end
 
   class MultiSection < Section
-    attr_reader :sections
+    attr_reader :sections, :mapping
 
-    def initialize home, &mapping
+    def initialize home
       @home = home
-      @mapping = mapping
+      # @mapping = mapping
+      @sections = []
     end
+
+    def add_section section
+      @sections << section
+    end
+
+    def add_mapping actions
+      @actions = actions # a list of ranges of the value: value[0..2], value[2..5] etc.
+      @mapping = {}
+      actions.each do |action|
+        @mapping[action] = nil
+      end
+      @mapping # right now mapping would be a hash with nil values
+    end
+
+    def assign! value
+      @mapping.each do |map|
+        @mapping[map].value = value[map]
+      end
+    end
+
+
 
     #mapping splits the value into several sections
     # these sections will be visible in @sections
