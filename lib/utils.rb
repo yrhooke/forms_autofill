@@ -51,7 +51,7 @@ module FormsAutofill
 
   class PdfForms::Field
     # to be able to note some info about fields
-    attr_accessor :id
+    attr_accessor :id, :value
   end
 
 

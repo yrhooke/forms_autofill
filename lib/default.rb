@@ -58,6 +58,11 @@ module FormsAutofill
       @fields << result
     end
 
+    def assign! value
+      @value = value
+      fields.each{|field| field.value = value}
+    end    
+
     def export
       {
         :class => self.class,
@@ -95,6 +100,13 @@ module FormsAutofill
 
     def add_field id
       #we don't need this here
+    end
+
+    def assign! value
+      @value = value
+      @sections.each do |map, section|
+        section.assign!(value[map]) # it's a section
+      end
     end
 
     def export
