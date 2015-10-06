@@ -87,7 +87,7 @@ module FormsAutofill
     attr_accessor :sections, :value
 
     def initialize
-      @sections = {}
+      @sections = {} # sections are added in form of range as key, and Section object as value
     end
 
     def add_field id
@@ -95,8 +95,22 @@ module FormsAutofill
     end
 
     def export
-      {}
+      { 
+        :class = self.class,
+        :name = @name
+        :value = @value,
+        :sections = @sections
+      }
 
+    def self.import hash, 
+      result = hash[:class].new
+      result.value = hash[:value]
+      result.name = hash[:name]
+      hash[:sections].each {|range, section| result.sections[range] = section}
+      result
+    end
+
+  end
 
 
     def add_field(id)

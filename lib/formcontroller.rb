@@ -78,13 +78,31 @@ module FormsAutofill
     end
 
 
-input of assign! here should be same as output of make_hash.
+# input of assign! here should be same as output of make_hash.
 
-section pretty much defined by fields it includes. 
+# section pretty much defined by fields it includes. 
 
-tree - leaf is [id, form name] => value
-all in array. 
-array item can be hash. 
+# tree - leaf is [id, form name] => value
+# all in array. 
+# array item can be hash. 
+
+
+# 3. cases: one value per section - defaults
+#           one value for multiple secitons - PdfSection
+#           value mapped to multiple pdfsections. - MultiSection.
+
+
+# < section class='pdfsection', value='something'> (works for default as well)
+#   <listelt - name = whatever, id = whatever, value = sectionvalue>
+# < section class='multisection' value='something', mapping = 'way split works'>
+#   <section class='pdfsection', value='result of mapping'>
+#     <listelt - name = whatever, id = whatever, value = sectionvalue(0..4)>
+
+
+# section has class, value, fields - add id attribute to field. 
+
+# multisection has class, value, mapping, and sections. 
+
 
 
     # def fill! info
