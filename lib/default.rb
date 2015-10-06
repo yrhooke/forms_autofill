@@ -2,12 +2,14 @@ module FormsAutofill
   
   class Section
     attr_reader :value
+    attr_accessor :name
 
     def initialize home
       @home = home
+      @name = nil
     end
 
-    @@HASHABLE = [] # attributes to be converted to/from hash
+    # @@HASHABLE = [] # attributes to be converted to/from hash
 
     def assign!
       #give relevant fields the relevant value
@@ -38,15 +40,64 @@ module FormsAutofill
   end
 
 
-  class Default < Section ## will need to abstract pdfsection as well
+  class Section ## will need to abstract pdfsection as well
+    attr_reader :fields
+    attr_accessor :name, :value
 
-    def initialize home #method, id
+    def initialize #method, id
       # methods = [:num, :name, :field]
       # raise ArgumentError unless methods.include? method
-      @home = home
+      @fields = []
       # @fields = get_field(method, id)
       # @value = @fields[0].value
     end
+
+    def add_field(id)
+      result = get_field_by_num(id)
+      @fields << result
+    end
+
+    def export
+      {
+        :class = self.class,
+        :name = @name
+        :value = @value,
+        :fields = @fields
+      }
+
+    def self.import hash, 
+      result = hash[:class].new
+      result.value = hash[:value]
+      result.name = hash[:name]
+      hash[:fields].each {|field| result.add_field field.id}
+      result
+    end
+
+
+  private
+
+    def get_field_by_num id
+      field = @home.fields[num]
+      field.id = num
+      field
+    end
+  end
+
+  class MultiSection < Section
+    attr_accessor :sections, :value
+
+    def initialize
+      @sections = {}
+    end
+
+    def add_field id
+      #we don't need this here
+    end
+
+    def export
+      {}
+
+
 
     def add_field(id)
       # methods = [:num, ]#:name, :field]

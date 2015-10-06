@@ -51,6 +51,10 @@ module FormsAutofill
       @sections << section
     end
 
+    def sub_section section
+      #removes all defaults with section fields
+
+
     # can change and remove sections manually for now
 
     def export
@@ -58,13 +62,30 @@ module FormsAutofill
     end
 
 
-    # def assign! 
-    #   @sections.each do |section|
-    #     section.assign!
-    #     new_section = PdfSection.from_hash section, @form
-    #     new_section.assign!
-    #   end
-    # end
+    def assign! 
+      @sections.each do |section|
+        section.assign!
+        new_section = PdfSection.from_hash section, @form
+        new_section.assign!
+      end
+    end
+    def assign! valueset
+      @sections.each do |section|
+        section.assign!
+        new_section = PdfSection.from_hash section, @form
+        new_section.assign!
+      end
+    end
+
+
+input of assign! here should be same as output of make_hash.
+
+section pretty much defined by fields it includes. 
+
+tree - leaf is [id, form name] => value
+all in array. 
+array item can be hash. 
+
 
     # def fill! info
     #   #should ultimately handle Defaults, Sections, and MultiSections
