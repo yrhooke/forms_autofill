@@ -40,7 +40,7 @@ module FormsAutofill
 
     def create_defaults
       @fields.each_with_index do |field, index|
-        newsection = Default.new @form
+        newsection = Section.new @form
         newsection.add_field index
         add_section(newsection)
       end
