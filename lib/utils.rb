@@ -35,33 +35,37 @@ module FormsAutofill
   #   end  
   # end  
 
-  # class PdfForms::PdftkWrapper
-  #   ## to write directly to files from ruby, without any manipulation
+  class PdfForms::PdftkWrapper
+    ## to write directly to files from ruby, without any manipulation
 
-  #   def extract_fdf_bin input, output
-  #     self.call_pdftk(input, "generate_fdf", "output", output)
-  #   end
+    def extract_fdf_bin input, output
+      self.call_pdftk(input, "generate_fdf", "output", output)
+    end
 
-  #   def fill_form_bin params = {:input => "", :output => "", :fdf => ""}
-  #     #params are input, output, fdf
-  #     self.call_pdftk params[:input], "fill_form", params[:fdf], "output", params[:output]
-  #   end
+    def fill_form_bin params = {:input => "", :output => "", :fdf => ""}
+      #params are input, output, fdf
+      self.call_pdftk params[:input], "fill_form", params[:fdf], "output", params[:output]
+    end
   
-  # end
+  end
 
   class PdfForms::Field
     # to be able to note some info about fields
     attr_accessor :id, :value
   end
+  
 
-
+  def pdftest arr
+  # to test the result of pdftk.get_fields 
+   arr.map{|field| [field.name, field.value]}
+  end  
 
   #generate fdf with specific values for each key in existing pdf
   
-  # def fill_with_index location, output, pdftk
-  #   keys = pdftk.get_field_names location
-  #   indices = Hash.new
-  #   keys.each_with_index {|key, index| indices[key] = index}
-  #   pdftk.fill_form location, output, indices
-  # end
+  def fill_with_index location, output, pdftk
+    keys = pdftk.get_field_names location
+    indices = Hash.new
+    keys.each_with_index {|key, index| indices[key] = index}
+    pdftk.fill_form location, output, indices
+  end
 end

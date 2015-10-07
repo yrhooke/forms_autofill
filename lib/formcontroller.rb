@@ -47,9 +47,9 @@ module FormsAutofill
       @sections
     end
 
-    # def add_section section
-    #   @sections << section
-    # end
+    def add_section section
+      @sections << section
+    end
 
     # def sub_section section
     #   #removes all defaults with section fields
@@ -141,6 +141,7 @@ module FormsAutofill
       pdftk.fill_form @form.path , destination, make_hash
     end
 
+
     # def self.read_defaults form
     #   #shoudl return Controller with defaults preset with values in form
     #   #this hash should be readable to FormController
@@ -150,7 +151,7 @@ module FormsAutofill
     #   # then exporting this whole thing into something. so you can with one command
     #   # know for a particular form what values need to be filled. 
     # end
-  private
+  # private
 
 
 
