@@ -5,7 +5,7 @@ module FormsAutofill
 
   class PdfSection
     require "json"
-    require "utils" # to cange PdfForms::Field attributes to access meta + role
+    # require "utils" # to cange PdfForms::Field attributes to access meta + role
 
     attr_reader :name, :fields, :home, :meta
     attr_accessor :role

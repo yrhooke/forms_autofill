@@ -68,25 +68,33 @@ module FormsAutofill
         :class => self.class,
         # :name => @name,
         :value => @value,
-        :fields => @fields
+        :fields => @fields.map{|field| field.to_hash}
       }
     end
 
     def self.import hash, home
       result = hash[:class].new home
       result.value = hash[:value]
+      result.import_subsections hash
       # result.name = hash[:name]
-      hash[:fields].each {|field| result.add_field field.id}
+      # hash[:fields].each {|field| result.add_field field[:id]}
       result
     end
 
-  private
+  # private
 
     def get_field_by_num num
       field = @home.fields[num]
       field.id = num
       field
     end
+
+    def import_subsections hash
+      hash[:fields].each {|field| add_field field[:id]}
+      self
+    end
+
+
   end
 
 
@@ -110,20 +118,30 @@ module FormsAutofill
     end
 
     def export
+      subsections = {}
+      @sections.each {|range, subsection| subsections[range] = subsection.export}
       { 
         :class => self.class,
         # :name => @name,
         :value => @value,
-        :sections => @sections.map{|section| section.export}
+        :sections => subsections
       }
     end
 
-    def self.import hash, home
-      result = hash[:class].new home
-      result.value = hash[:value]
-      # result.name = hash[:name]
-      hash[:sections].each {|range, section| result.sections[range] = section}
-      result
+    # def self.import hash, home
+    #   result = hash[:class].new home
+    #   result.value = hash[:value]
+    #   # result.name = hash[:name]
+    #   hash[:sections].each {|range, section| result.sections[range] = section}
+    #   result
+    # end
+
+  # private
+
+    def import_subsections hash
+      hash[:sections].each do |range, subsection| 
+        self.sections[range] = subsection[:class].import(subsection, @home)
+      end
     end
 
   end

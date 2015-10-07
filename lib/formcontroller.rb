@@ -4,10 +4,10 @@ module FormsAutofill
   # action: take left hand and map to right hand correctly, including duplicates
 
   # Procedure is:
-  # form = FormController new pdf_you_want
-  # form.add_section #whatever section or sections you want, possibly multiple times
-  # form.assign!
-  # form.fill! info # hash taken from elsewhere of :role => value pairs
+  # form = FormController new pdf_path
+  # form.add_section #whatever section or sections you want, 
+  # form.create_defaults - creates default sections for all the rest
+  # form.fill! user_input - the user input you want, in terms of section names
   # form.write destination
 
 
@@ -20,23 +20,10 @@ module FormsAutofill
     def initialize form_path
       @pdftk = PdfForms.new @@pdftk_path
       @form = PdfForms::Pdf.new form_path, @pdftk
-      @fields = @form.fields
+      @fields = @form.fields # free fields
       @sections = []
     end
 
-    # def add_section  section
-    #   #__NOTE: should accept any kind of section, not just PdfSection
-    #   if section.class == PdfSection
-    #     add_section_object section
-    #   elsif section.class == Hash
-    #     add_section_hash section
-    #   elsif section.class == Array
-    #     add_section_arr section
-    #   else
-    #     raise TypeError, "section(s)' class not recognized"
-    #   end
-    #   @sections
-    # end
 
     def create_defaults
       @fields.each_with_index do |field, index|
@@ -49,13 +36,10 @@ module FormsAutofill
 
     def add_section section
       @sections << section
+      relevant_fields = select_fields(section).each{|field| field.to_hash}
+      @fields.delete_if {|field| relevant_fields.include? field.to_hash} #__ISSUE: not sure if this will work - might be different objects
     end
 
-    # def sub_section section
-    #   #removes all defaults with section fields
-    # end
-
-    # can change and remove sections manually for now
 
     def export
       @sections.map {|section| section.export}
@@ -69,6 +53,12 @@ module FormsAutofill
       end
     end
 
+    def self.import structure
+      # creates a new FormController with the right form, and the right sections defined, and the default values
+      # structure should be same as export output. 
+    end
+
+    # def store_field field
 
     # No assign for form - too complicated.
     # assign values to the individual sections. 
@@ -82,30 +72,7 @@ module FormsAutofill
     #   3 I want to add six values, have them be assigned to multisections/sections, 
         # have all the rest added from someplace, and write all this on top of the blank pdf. 
     # have export/impo
-    # def assign! 
-    #   @sections.each do |section|
-    #     section.assign!
-    #     new_section = PdfSection.from_hash section, @form
-    #     new_section.assign!
-    #   end
-    # end
 
-    # def assign! valueset
-    #   @sections.each do |section|
-    #     section.assign!
-    #     new_section = PdfSection.from_hash section, @form
-    #     new_section.assign!
-    #   end
-    # end
-
-
-# input of assign! here should be same as output of make_hash.
-
-# section pretty much defined by fields it includes. 
-
-# tree - leaf is [id, form name] => value
-# all in array. 
-# array item can be hash. 
 
 
 # 3. cases: one value per section - defaults
@@ -124,18 +91,6 @@ module FormsAutofill
 
 # multisection has class, value, mapping, and sections. 
 
-
-
-    # def fill! info
-    #   #should ultimately handle Defaults, Sections, and MultiSections
-    #   info.each do |role, value|
-    #     @fields.each do |field| 
-    #       if field.role == role
-    #         field.value = value
-    #       end
-    #     end
-    #   end
-    # end
 
     def write destination
       pdftk.fill_form @form.path , destination, make_hash
@@ -157,7 +112,6 @@ module FormsAutofill
 
     def make_hash 
       #creates hash of the fields parameters
-      exported = self.export
       fields = @sections.map{|section| select_fields section}.flatten
       result = Hash.new
       fields.each {|field| result[field.name.to_sym] = field.value}
@@ -172,6 +126,7 @@ module FormsAutofill
       else
         result += section.sections.values.map{|subsection| select_fields subsection}.flatten
       end
+      result.flatten
     end
 
 
@@ -179,6 +134,8 @@ module FormsAutofill
 
 
 end
+
+
 
 # old:
 #     def import_sections sections_json, options = {}
