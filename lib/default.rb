@@ -91,7 +91,7 @@ module FormsAutofill
 
 
   class MultiSection < Section
-    attr_accessor :sections, :value
+    attr_accessor :sections
 
     def initialize home
       @home = home
@@ -114,7 +114,7 @@ module FormsAutofill
         :class => self.class,
         # :name => @name,
         :value => @value,
-        :sections => @sections
+        :sections => @sections.map{|section| section.export}
       }
     end
 

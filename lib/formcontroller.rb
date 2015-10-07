@@ -47,28 +47,48 @@ module FormsAutofill
       @sections
     end
 
-    def add_section section
-      @sections << section
-    end
+    # def add_section section
+    #   @sections << section
+    # end
 
-    def sub_section section
-      #removes all defaults with section fields
-    end
+    # def sub_section section
+    #   #removes all defaults with section fields
+    # end
 
     # can change and remove sections manually for now
 
     def export
-      @sections.map {|section| section.fields}
+      @sections.map {|section| section.export}
     end
 
-
-    def assign! 
-      @sections.each do |section|
-        section.assign!
-        new_section = PdfSection.from_hash section, @form
-        new_section.assign!
+    def fill! user_data
+      # example{"name" => "James", "DOB" => "05/03/2010"}
+      user_data.each do |label, value|
+        relevant_section = @sections.select {|section| section.name == label}
+        relevant_section.first.assign! value
       end
     end
+
+
+    # No assign for form - too complicated.
+    # assign values to the individual sections. 
+    # manually create sections like firstname, phonenum, etc. 
+    # manually assign them values.
+
+    # so now create_defaults can read a pdf and make sections. You define the sections containing multiple fields and the multisections manually. 
+    # 2 kinds of functionality -
+    #   1 is having a steady state to store values in the way they're organized
+    #   2 is writing them down. 
+    #   3 I want to add six values, have them be assigned to multisections/sections, 
+        # have all the rest added from someplace, and write all this on top of the blank pdf. 
+    # have export/impo
+    # def assign! 
+    #   @sections.each do |section|
+    #     section.assign!
+    #     new_section = PdfSection.from_hash section, @form
+    #     new_section.assign!
+    #   end
+    # end
 
     # def assign! valueset
     #   @sections.each do |section|
@@ -117,7 +137,7 @@ module FormsAutofill
     #   end
     # end
 
-    def write values, destination
+    def write destination
       pdftk.fill_form @form.path , destination, make_hash
     end
 
@@ -132,29 +152,27 @@ module FormsAutofill
     # end
   private
 
-    def add_section_object section
-      #__NOTE: doesn't test section owner
-      @sections << section.to_hash
-    end
 
-    def add_section_hash section
-      @sections << section
-    end
-
-    def add_section_arr sections
-      @section.concat sections
-    end
-
-    def check_owner
-      ##__IMPORTANT: implement
-    end
 
     def make_hash 
       #creates hash of the fields parameters
-      newvals = Hash.new
-      @fields.map {|field| newvals[field.name.to_sym] = field.value}
-      newvals
+      exported = self.export
+      fields = @sections.map{|section| select_fields section}.flatten
+      result = Hash.new
+      fields.each {|field| result[field.name.to_sym] = field.value}
+      # @fields.map {|field| newvals[field.name.to_sym] = field.value}
+      result
     end
+
+    def select_fields section
+      result = []
+      if section.class == Section
+        result << section.fields
+      else
+        result += section.sections.values.map{|subsection| select_fields subsection}.flatten
+      end
+    end
+
 
   end
 
