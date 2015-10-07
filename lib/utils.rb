@@ -56,6 +56,12 @@ module FormsAutofill
     ATTRS << :id
   end
   
+  def mksection name, fields
+    section = Section.new $blank
+    section.name = name
+    fields.each {|num| section.add_field num}
+    section
+  end
 
   def pdftest arr
   # to test the result of pdftk.get_fields 

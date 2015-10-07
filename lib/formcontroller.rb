@@ -16,12 +16,15 @@ module FormsAutofill
     attr_accessor :sections
     attr_reader :form 
 
-    @@pdftk_path = puts File.realpath(__dir__) + "/../bin/pdftk"
+    @@pdftk_path = File.realpath(__dir__) + "/../bin/pdftk"
 
     def initialize form_path
       @pdftk = PdfForms.new @@pdftk_path
       @form = PdfForms::Pdf.new form_path, @pdftk
-      @fields = @form.fields # free fields
+      @fields = @form.fields.map.with_index do |field, index| 
+        field.id = index
+        field
+      end
       @sections = []
     end
 
@@ -37,7 +40,7 @@ module FormsAutofill
 
     def add_section section
       @sections << section
-      relevant_fields = select_fields(section).each{|field| field.to_hash}
+      relevant_fields = select_fields(section).map{|field| field.to_hash}
       @fields.delete_if {|field| relevant_fields.include? field.to_hash} #__ISSUE: not sure if this will work - might be different objects
     end
 
@@ -69,6 +72,10 @@ module FormsAutofill
       controller
     end
 
+    def fast_section id
+      newsec = mksection @fields[id].name, [id]
+      add_section newsec
+    end
     # def store_field field
 
     # No assign for form - too complicated.
@@ -119,7 +126,11 @@ module FormsAutofill
     # end
   # private
 
-
+    def clear?
+      # test whether it contains duplicates
+      fields = @sections.map{|sec| select_fields(sec)}.flatten
+      fields.uniq == fields
+    end
 
     def make_hash 
       #creates hash of the fields parameters

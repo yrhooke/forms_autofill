@@ -55,6 +55,7 @@ module FormsAutofill
 
     def add_field(id)
       result = get_field_by_num(id)
+      @value = result.value
       @fields << result
     end
 
@@ -66,7 +67,7 @@ module FormsAutofill
     def export
       {
         :class => self.class,
-        # :name => @name,
+        :name => @name,
         :value => @value,
         :fields => @fields.map{|field| field.to_hash}
       }
@@ -122,7 +123,7 @@ module FormsAutofill
       @sections.each {|range, subsection| subsections[range] = subsection.export}
       { 
         :class => self.class,
-        # :name => @name,
+        :name => @name,
         :value => @value,
         :sections => subsections
       }
