@@ -1,6 +1,4 @@
-2. set up defaults - so it will be easy to store them (can implement as array of sections?)
-3. fix formController to support defaults
-4. provide support for MultiSections - phone number being 3 different fields
-5. fix formController to support split up objects
-6. set up installer
-7. basic web server. 
+1. get everything running
+2. refactor - make more methods private.
+3. set up installer explanation
+4. basic web server. 

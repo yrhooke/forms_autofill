@@ -14,6 +14,7 @@ module FormsAutofill
   class FormController
     require "pdf-forms"
     attr_accessor :sections
+    attr_reader :form 
 
     @@pdftk_path = puts File.realpath(__dir__) + "/../bin/pdftk"
 
@@ -42,7 +43,11 @@ module FormsAutofill
 
 
     def export
-      @sections.map {|section| section.export}
+      {
+        :pdftk_path => @@pdftk_path,
+        :form_path => @form.path,
+        :sections => sections.map{|section| section.export}
+      }
     end
 
     def fill! user_data
@@ -53,9 +58,15 @@ module FormsAutofill
       end
     end
 
-    def self.import structure
+    def self.import data
       # creates a new FormController with the right form, and the right sections defined, and the default values
       # structure should be same as export output. 
+      controller = FormController.new data[:form_path]
+      data[:sections].each do |section_hash| 
+        section = Section.import section_hash, controller.form
+        controller.add_section section
+      end
+      controller
     end
 
     # def store_field field
