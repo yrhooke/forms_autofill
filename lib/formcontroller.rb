@@ -20,28 +20,45 @@ module FormsAutofill
 
     def initialize form_path
       @pdftk = PdfForms.new @@pdftk_path
+      # @form_path = form_path
       @form = PdfForms::Pdf.new form_path, @pdftk
-      @fields = @form.fields.map.with_index do |field, index| 
+      @form.fields.each_.with_index do |field, index| 
         field.id = index
-        field
       end
       @sections = []
     end
 
 
     def create_defaults
-      @fields.each_with_index do |field, index|
-        newsection = Section.new @form
-        newsection.add_field index
-        add_section(newsection)
+      unless clear?
+        puts "Error: Multiple sections contain the same field"
+        nil
+      else
+        unassigned_fields = @form.fields.reject { |f| fields.include? f }
+        unassigned_fields.each do |field| 
+          newsection = Section.new @form
+          newsection.add_field field.id
+          add_section(newsection)
+        end
+        @sections
       end
-      @sections
     end
+
+
+    # def create_defaults
+    #   # take all unassigned fields, make unnamed sections from them.
+    #   @fields.each_with_index do |field, index|
+    #     newsection = Section.new @form
+    #     newsection.add_field index
+    #     add_section(newsection)
+    #   end
+    #   @sections
+    # end
 
     def add_section section
       @sections << section
-      relevant_fields = select_fields(section).map{|field| field.to_hash}
-      @fields.delete_if {|field| relevant_fields.include? field.to_hash} #__ISSUE: not sure if this will work - might be different objects
+      # relevant_fields = select_fields(section).map{|field| field.to_hash}
+      # @fields.delete_if {|field| relevant_fields.include? field.to_hash} #__ISSUE: not sure if this will work - might be different objects
     end
 
 
@@ -72,10 +89,10 @@ module FormsAutofill
       controller
     end
 
-    def fast_section id
-      newsec = mksection @fields[id].name, [id]
-      add_section newsec
-    end
+    # def fast_section id
+    #   newsec = mksection @fields[id].name, [id]
+    #   add_section newsec
+    # end
     # def store_field field
 
     # No assign for form - too complicated.
@@ -149,6 +166,10 @@ module FormsAutofill
         result += section.sections.values.map{|subsection| select_fields subsection}.flatten
       end
       result.flatten
+    end
+
+    def fields
+      @sections.map { |section| select_fields section }.flatten
     end
 
 
