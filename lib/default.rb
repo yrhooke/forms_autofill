@@ -74,12 +74,17 @@ module FormsAutofill
     end
 
     def self.import hash, home
-      result = hash[:class].new home
-      result.value = hash[:value]
-      result.import_subsections hash
-      # result.name = hash[:name]
-      # hash[:fields].each {|field| result.add_field field[:id]}
-      result
+      unless home
+        puts "Error with home === #{home.inspect}"
+        nil
+      else
+        result = hash[:class].new home
+        result.value = hash[:value]
+        result.import_subsections hash
+        # result.name = hash[:name]
+        # hash[:fields].each {|field| result.add_field field[:id]}
+        result
+      end
     end
 
   # private
