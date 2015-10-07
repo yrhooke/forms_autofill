@@ -29,6 +29,13 @@ module FormsAutofill
     end
 
 
+
+# 1. field id added when adding to section
+# 2. field id added when @field created. - that's no good. 
+
+
+# issues: field id assigned in 2 places. 
+# create defaults create multiple copies of multisections. 
     def create_defaults
       unless clear?
         puts "Error: Multiple sections contain the same field"
@@ -132,20 +139,8 @@ module FormsAutofill
     end
 
 
-    # def self.read_defaults form
-    #   #shoudl return Controller with defaults preset with values in form
-    #   #this hash should be readable to FormController
-    #   #making the processing of a new pdf - filling it with all the values you
-    #   #don't change + reading. Then finding locations of values you do change 
-    #   # and defining sections on those values - should add a cleanup method
-    #   # then exporting this whole thing into something. so you can with one command
-    #   # know for a particular form what values need to be filled. 
-    # end
-  # private
-
     def clear?
-      # test whether it contains duplicates
-      fields = @sections.map{|sec| select_fields(sec)}.flatten
+      # test whether it contains duplicates fields
       fields.uniq == fields
     end
 
