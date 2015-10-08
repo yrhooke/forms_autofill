@@ -54,10 +54,25 @@ module FormsAutofill
     attr_accessor :id, :value
 
     ATTRS << :id
+
+    # def ==(other_field)
+    #   self.to_hash == other_field.to_hash
+    # end
   end
-  
+
+  class PdfForms::Pdf
+    
+    def self.new_with_id path, pdftk, options = {}
+      pdf = PdfForms.new(path, pdftk, options = {})
+      pdf.fields.each_with_index do |field, index|
+        field.id = index
+      end
+      pdf
+    end
+  end
+      
   def mksection name, fields
-    section = Section.new $blank
+    section = Section.new $sample
     section.name = name
     fields.each {|num| section.add_field num}
     section
