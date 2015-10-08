@@ -63,7 +63,7 @@ module FormsAutofill
   class PdfForms::Pdf
     
     def self.new_with_id path, pdftk, options = {}
-      pdf = PdfForms.new(path, pdftk, options = {})
+      pdf = self.new( path, pdftk, options = {})
       pdf.fields.each_with_index do |field, index|
         field.id = index
       end

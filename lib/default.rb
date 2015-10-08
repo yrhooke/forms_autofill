@@ -80,7 +80,7 @@ module FormsAutofill
       else
         result = hash[:class].new home
         result.value = hash[:value]
-        result.import_subsections hash
+        result.import_subsections! hash #__ISSUE: does this do what we wnat?
         # result.name = hash[:name]
         # hash[:fields].each {|field| result.add_field field[:id]}
         result
@@ -90,14 +90,12 @@ module FormsAutofill
   # private
 
     def get_field_by_num num
-      field = @home.fields[num]
-      field.id = num
-      field
+      @home.fields[num]
     end
 
     def import_subsections hash
       hash[:fields].each {|field| add_field field[:id]}
-      self
+      self 
     end
 
 

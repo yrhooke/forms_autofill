@@ -20,11 +20,7 @@ module FormsAutofill
 
     def initialize form
       @pdftk = PdfForms.new @@pdftk_path
-      # @form_path = form_path
-      @form = form#PdfForms::Pdf.new form_path, @pdftk
-      @form.fields.each_with_index do |field, index| 
-        field.id = index
-      end
+      @form = form
       @sections = []
     end
 
@@ -89,7 +85,8 @@ module FormsAutofill
     def self.import data
       # creates a new FormController with the right form, and the right sections defined, and the default values
       # structure should be same as export output. 
-      form = PdfForms::Pdf.new data[:form_path], @@pdftk_path
+      pdftk = PdfForms.new @@pdftk_path
+      form = PdfForms::Pdf.new_with_id data[:form_path], pdftk
       controller = FormController.new form
       data[:sections].each do |section_hash| 
         section = Section.import section_hash, form
