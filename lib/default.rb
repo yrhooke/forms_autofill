@@ -39,8 +39,9 @@ module FormsAutofill
         nil
       else
         result = hash[:class].new home
+        result.name = hash[:name]        
         result.value = hash[:value]
-        result.import_subsections! hash #__ISSUE: does this do what we wnat?
+        result.import_subsections hash #__ISSUE: does this do what we wnat?
         # result.name = hash[:name]
         # hash[:fields].each {|field| result.add_field field[:id]}
         result

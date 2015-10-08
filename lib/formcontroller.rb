@@ -93,6 +93,12 @@ module FormsAutofill
       result
     end
 
+    def section_hash
+      output = Hash.new
+      @sections.each {|sec| output[sec.name] = sec.value}
+      output
+    end
+
     def select_fields section
       result = []
       if section.class == Section
