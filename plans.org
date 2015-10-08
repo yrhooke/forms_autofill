@@ -1,4 +1,6 @@
-1. get everything running
-2. refactor - make more methods private.
-3. set up installer explanation
-4. basic web server. 
+1. store/read from user input - YAML
+2. set up to load FormController object from text type files - with sections/defaults defined properly
+3. test everything works
+4. refactor - make more methods private.
+5. set up installer explanation
+6. basic web server. 
