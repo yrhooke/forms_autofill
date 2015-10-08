@@ -3,4 +3,5 @@
 3. test everything works
 4. refactor - make more methods private.
 5. set up installer explanation
+2. sections should get value from below when initialzed - including multisections
 6. basic web server. 
