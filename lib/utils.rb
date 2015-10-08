@@ -23,20 +23,10 @@ module FormsAutofill
 #   "output", "./tmp/filled.pdf")
 # will do the same thing as above
 
-  # class PdfForms::DataFormat
-  #   ## to fix format of fdf
-  #   def to_pdf_data
-  #     pdf_data = header
-  #     @data.each do |form_part|
-  #       pdf_data << field(form_part.name, form_part.value)
-  #     end  
-  #     pdf_data << footer
-  #     return encode_data(pdf_data)
-  #   end  
-  # end  
 
   class PdfForms::PdftkWrapper
     ## to write directly to files from ruby, without any manipulation
+    ## Not really used elsewhere. 
 
     def extract_fdf_bin input, output
       self.call_pdftk(input, "generate_fdf", "output", output)
