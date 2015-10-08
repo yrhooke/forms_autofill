@@ -18,11 +18,11 @@ module FormsAutofill
 
     @@pdftk_path = File.realpath(__dir__) + "/../bin/pdftk"
 
-    def initialize form_path
+    def initialize form
       @pdftk = PdfForms.new @@pdftk_path
       # @form_path = form_path
-      @form = PdfForms::Pdf.new form_path, @pdftk
-      @form.fields.each_.with_index do |field, index| 
+      @form = form#PdfForms::Pdf.new form_path, @pdftk
+      @form.fields.each_with_index do |field, index| 
         field.id = index
       end
       @sections = []
@@ -37,6 +37,7 @@ module FormsAutofill
 # issues: field id assigned in 2 places. 
 # create defaults create multiple copies of multisections. 
     def create_defaults
+      #__ISSUE: select all fields not in sections
       unless clear?
         puts "Error: Multiple sections contain the same field"
         nil
@@ -88,9 +89,10 @@ module FormsAutofill
     def self.import data
       # creates a new FormController with the right form, and the right sections defined, and the default values
       # structure should be same as export output. 
-      controller = FormController.new data[:form_path]
+      form = PdfForms::Pdf.new data[:form_path], @@pdftk_path
+      controller = FormController.new form
       data[:sections].each do |section_hash| 
-        section = Section.import section_hash, controller.form
+        section = Section.import section_hash, form
         controller.add_section section
       end
       controller
