@@ -4,9 +4,9 @@ module FormsAutofill
   def quickstart
     $pdftk = PdfForms.new( File.realpath(__dir__) + "/../bin/pdftk")
 
-    $blank_path = "./db/1010-blank.pdf"
-    $indices_path = "./tmp/indices.pdf" 
-    $sample_path = "./db/1010-filled-sample.pdf"
+    $blank_path = "../db/1010-blank.pdf"
+    $indices_path = "../tmp/indices.pdf" 
+    $sample_path = "../db/1010-filled-sample.pdf"
 
     $blank = PdfForms::Pdf.new $blank_path, $pdftk
   end
@@ -76,7 +76,7 @@ module FormsAutofill
 
   #generate fdf with specific values for each key in existing pdf
   
-  def fill_with_index location, output, pdftk
+  def generate_indices location, output, pdftk
     keys = pdftk.get_field_names location
     indices = Hash.new
     keys.each_with_index {|key, index| indices[key] = index}

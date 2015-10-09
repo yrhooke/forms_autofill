@@ -1,14 +1,4 @@
 module FormsAutofill
-  # left hand: json that says first, middle, and last name.
-  # right hand: my sections + templates
-  # action: take left hand and map to right hand correctly, including duplicates
-
-  # Procedure is:
-  # form = FormController new pdf_path
-  # form.add_section #whatever section or sections you want, 
-  # form.create_defaults - creates default sections for all the rest
-  # form.fill! user_input - the user input you want, in terms of section names
-  # form.write destination
 
   class FormController
     require "pdf-forms"
