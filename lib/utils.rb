@@ -5,7 +5,8 @@ module FormsAutofill
     $pdftk = PdfForms.new( File.realpath(__dir__) + "/../bin/pdftk")
 
     $blank_path = "./db/1010-blank.pdf"
-    $indices_path = "./tmp/indices.pdf"
+    $indices_path = "./tmp/indices.pdf" 
+    $sample_path = "./db/1010-filled-sample.pdf"
 
     $blank = PdfForms::Pdf.new $blank_path, $pdftk
   end

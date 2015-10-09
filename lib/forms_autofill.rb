@@ -11,25 +11,35 @@ module FormsAutofill
     YAML.load(File.read(file))
   end
 
-  $defaults_path = "./db/defaults.yml"
-  $user_path = "./db/user_info.yml"
+  $defaults_path = "../db/defaults.yml"
+  $user_path = "../db/user_info.yml"
+  $template_path = "../db/template_hash.yaml"
+  
+  def read_info
+    default_info = yamlread $defaults_path
+    user_info = yamlread $user_path
+    default_info.merge(user_info)
+  end
+
+  def setup template_pdf
+    # set up a form with special sections as defined by user/office hashes,
+    # and with rest of fields lifted from template_pdf
+    user_hash = yamlread "../tmp/user_info_hash.yaml"
+    office_hash = yamlread "../tmp/office_info_hash.yaml"
+    user_hash[:sections] += office_hash[:sections] 
+    user_hash[:form_path] = template_pdf
+    controller = FormController.import user_hash
+    controller.create_defaults
+    controller
+  end
+
 
   def main
-    default = yamlread $defaults_path
-    user_info = yamlread $user_path
-    user_hash = yamlread "./tmp/user_info_hash.yaml"
-    office_hash = yamlread "./tmp/office_info_hash.yaml"
-    # others_hash = yeamlread "./tmp/" #need a file for defaults we create
-    user_hash[:sections] += office_hash[:sections] #__NOTE: changes user hash
-    # puts defined_hash
-    controller = FormController.import user_hash
-    puts "Controller created."
-    controller.fill! user_info
-    puts "user info"
-    controller.fill! default
-    puts "default"
-
-    controller.write "./tmp/result.pdf"
+    info_hash = yamlread $template_path
+    controller = FormController.import info_hash
+    controller.fill! $default_info
+    controller.fill! $user_info
+    controller.write "./tmp/1010.pdf"
   end
 
 end

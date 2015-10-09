@@ -86,7 +86,7 @@ module FormsAutofill
 
     def make_hash 
       #creates hash of the fields parameters
-      fields = @sections.map{|section| select_fields section}.flatten
+      # fields = @sections.map{|section| select_fields section}.flatten
       result = Hash.new
       fields.each {|field| result[field.name.to_sym] = field.value}
       # @fields.map {|field| newvals[field.name.to_sym] = field.value}

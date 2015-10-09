@@ -15,7 +15,7 @@ module FormsAutofill
 
     def add_field(id)
       result = get_field_by_num(id)
-      @value = result.value
+      # @value = result.value ##__ISSUE: so values are taken top down, not bottom up?
       @fields << result
     end
 
