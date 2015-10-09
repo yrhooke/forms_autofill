@@ -5,6 +5,32 @@ require "default"
 require "formcontroller"
 
 module FormsAutofill
+  require "yaml"
+
+  def yamlread file
+    YAML.load(File.read(file))
+  end
+
+  $defaults_path = "./db/defaults.yml"
+  $user_path = "./db/user_info.yml"
+
+  def main
+    default = yamlread $defaults_path
+    user_info = yamlread $user_path
+    user_hash = yamlread "./tmp/user_info_hash.yaml"
+    office_hash = yamlread "./tmp/office_info_hash.yaml"
+    # others_hash = yeamlread "./tmp/" #need a file for defaults we create
+    user_hash[:sections] += office_hash[:sections] #__NOTE: changes user hash
+    # puts defined_hash
+    controller = FormController.import user_hash
+    puts "Controller created."
+    controller.fill! user_info
+    puts "user info"
+    controller.fill! default
+    puts "default"
+
+    controller.write "./tmp/result.pdf"
+  end
 
 end
 

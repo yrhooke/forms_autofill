@@ -74,7 +74,7 @@ module FormsAutofill
     end    
 
     def write destination
-      pdftk.fill_form @form.path , destination, make_hash
+      @pdftk.fill_form @form.path , destination, make_hash
     end
 
     # UTILS
