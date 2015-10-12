@@ -7,20 +7,11 @@ test whether works for windows
  - set up clrf in yaml files
 
 
-__NOTE: indices different in template and in blank
-
 Issues:
 
-phone number index off in p 5
+- phone number on page 19 should be incorporated into Office phone multiclass
 
-p19 - no phone number in people helping you
+- p 17 - expiration date for money not calculated
 
-p27 - total income should be 0
-
-p26+27 - no_116 all over
-
-phne number on page 19 should be incorporated into Office phone multiclass
-
-_____
-
-maybe categorize fields by names is more stable?
+- field index is off in yaml, taken from template.pdf 
+  __NOTE: indices different in template and in blank
