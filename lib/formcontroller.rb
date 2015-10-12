@@ -5,7 +5,8 @@ module FormsAutofill
     attr_accessor :sections
     attr_reader :form 
 
-    @@pdftk_path = File.realpath(__dir__) + "/../bin/pdftk"
+    # @@pdftk_path = File.realpath(__dir__) + "/../bin/pdftk"
+    @@pdftk_path = File.expand_path("/../bin/pdftk", File.dirname(__FILE__))
 
     def initialize form
       @pdftk = PdfForms.new @@pdftk_path

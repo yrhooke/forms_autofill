@@ -8,8 +8,8 @@ Home city: ''
 Home county: ''
 Home state: ''
 Home zip: ''
-Birth date: '' # format is 'mm/dd/yyyy'
-US Entrance date: ''
+Birth date: '' # format is 'mm/dd/yyyy'. no extra spaces in quotes
+US Entrance date: '' # format is 'mm/dd/yyyy'. no extra spaces in quotes
 Immigrant registration number: ''
-Social Security Number: ''
+Social Security Number: '' # no extra spaces in quotes
 

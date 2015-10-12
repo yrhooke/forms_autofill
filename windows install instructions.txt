@@ -17,7 +17,7 @@ windows install instructions:
 
 4.  open command prompt (cmd.exe)
 
-    -note: all commands from hereon will be for the command prompt
+    -note: the next couple commands you should do on the command prompt. 
 
 5.  go to folder where you want project folder home to be stored
       ( you can change there using cd command:
@@ -30,9 +30,7 @@ windows install instructions:
 
 7. type 'git clone https://github.com/yrhooke/forms_autofill.git'
 
-8. type 'cd forms_autofill'
-
-9. type 'bin/win-setup.bat'
+8. using your normal file browser, open the project's bin folder. press win-setup.bat
 
 
 ______________
