@@ -13,9 +13,13 @@ module FormsAutofill
       # @value = @fields[0].value
     end
 
-    def add_field(id)
+    def add_field(id, options = {})
+      # add field to section, optionally assign a new value to that field 
+      #__NOTE: (doesn't affect section @value)
       result = get_field_by_num(id)
-      # @value = result.value ##__ISSUE: so values are taken top down, not bottom up?
+      if options[:value]
+        result.value = options[:value]
+      end
       @fields << result
     end
 
@@ -34,6 +38,7 @@ module FormsAutofill
     end
 
     def self.import hash, home
+      ## __NOTE: reassigns all fields in @home with the values in hash
       unless home
         puts "Error with home === #{home.inspect}"
         nil
@@ -55,7 +60,7 @@ module FormsAutofill
     end
 
     def import_subsections hash
-      hash[:fields].each {|field| add_field field[:id]}
+      hash[:fields].each {|field| add_field field[:id], :value => field[:value]}
       self 
     end
 
