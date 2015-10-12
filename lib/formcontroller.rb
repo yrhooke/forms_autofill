@@ -103,6 +103,9 @@ module FormsAutofill
       @sections.map { |section| select_fields section }.flatten
     end
 
+    def includes_field? field
+      fields.any?{|f| f == field}
+    end
   end
 
 end

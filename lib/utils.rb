@@ -10,6 +10,14 @@ module FormsAutofill
 
     $blank = PdfForms::Pdf.new $blank_path, $pdftk
   end
+
+  def yamlread file
+    YAML.load(File.read(file))
+  end
+
+  def path_in_proj path
+    File.expand_path(path, File.dirname(__FILE__))
+  end
 # Pdf forms commands are all based on SafeShell.execute which takes comma 
 # sepearated arguments, and the pdftk binary  - docs here: 
 # https://www.pdflabs.com/docs/pdftk-man-page/
@@ -23,7 +31,10 @@ module FormsAutofill
 # pdftk.call_pdftk("./db/1010-blank.pdf", "fill_form", "./tmp/sample2.fdf", \
 #   "output", "./tmp/filled.pdf")
 # will do the same thing as above
-
+  
+  def shorten field_array
+    field_array.map {|f| [f.name, f.value]}
+  end    
 
   class PdfForms::PdftkWrapper
     ## to write directly to files from ruby, without any manipulation
@@ -46,9 +57,10 @@ module FormsAutofill
 
     ATTRS << :id
 
-    # def ==(other_field)
-    #   self.to_hash == other_field.to_hash
-    # end
+    def ==(other_field)
+      self.to_hash == other_field.to_hash
+    end
+
   end
 
   class PdfForms::Pdf
