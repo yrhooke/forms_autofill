@@ -1,4 +1,10 @@
-https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-win-setup.exe
-bundle install
 
-# Do any other automated setup that you need to do here
+for /f %%i in ('cd') do set origin=%%i
+
+for /f %%i in ('where pdftk') do set pdftk1=%%i
+
+cd %~dp0
+
+mklink %pdftk1% bin/pdftk
+
+cd %origin%
