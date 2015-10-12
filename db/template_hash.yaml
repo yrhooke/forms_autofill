@@ -1,6 +1,6 @@
 ---
-:pdftk_path: "/Users/rhooke/projects/forms_autofill/lib/../bin/pdftk"
-:form_path: "./db/template.pdf"
+:pdftk_path: "/Users/rhooke/projects/forms_autofill/bin/pdftk"
+:form_path: "/Users/rhooke/projects/forms_autofill/db/1010-blank.pdf" 
 :sections:
 - :class: &1 !ruby/class 'FormsAutofill::Section'
   :name: First name
