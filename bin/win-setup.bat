@@ -8,3 +8,5 @@ cd %~dp0
 mklink %pdftk1% bin/pdftk
 
 cd %origin%
+
+bundle install
