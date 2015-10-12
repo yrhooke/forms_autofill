@@ -1,12 +1,59 @@
 windows install instructions:
 
-download + install Ruby:
-http://dl.bintray.com/oneclick/rubyinstaller/rubyinstaller-2.2.3-x64.exe
+1.  download + install Ruby (2.2.3):
+    http://dl.bintray.com/oneclick/rubyinstaller/rubyinstaller-2.2.3-x64.exe
 
-download + install Git:
-https://github.com/git-for-windows/git/releases/download/v2.6.1.windows.1/Git-2.6.1-64-bit.exe
+    - note: check "Add Ruby executables to your PATH", 
+            also check "Associate .rb and .rbw files with this Ruby installation"
 
-download + install pdftk:
-https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-win-setup.exe
+2.  download + install Git:
+    https://github.com/git-for-windows/git/releases/download/v2.6.1.windows.1/Git-2.6.1-64-bit.exe
 
+    - note: check "Use git from Windows Command Prompt"
+            also check "Checkout Windows-style, commit Unix-style line endings"
+
+3.  download + install pdftk (server):
+    https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-win-setup.exe
+
+4.  open command prompt (cmd.exe)
+
+    -note: all commands from hereon will be for the command prompt
+
+5.  go to folder where you want project folder home to be stored
+      ( you can change there using cd command:
+
+        cd foldername   will take you to the folder named foldername
+        dir             will show you what is in the current folder, 
+        cd ..           will go to the parent folder.)
+
+6. type 'gem install bundler' - Windows will ask for permission, allow it (gem is safe)
+
+7. type 'git clone https://github.com/yrhooke/forms_autofill.git'
+
+8. type 'cd forms_autofill'
+
+9. type 'bin/win-setup.bat'
+
+
+______________
+
+
+Use :
+
+
+1. enter the user data between the '' marks in db/user_info.yml
+
+2. in command line type ruby lib/forms_autofill.rb
+
+3. The resulting pdf will be created in tmp/1010.pdf
+
+
+
+______________
+
+Update:
+
+1. open command prompt, cd to project's parent directory (forms_autofill)
+
+2. type 'git pull'.
 
