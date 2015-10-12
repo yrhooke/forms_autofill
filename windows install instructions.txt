@@ -1,0 +1,12 @@
+windows install instructions:
+
+download + install Ruby:
+http://dl.bintray.com/oneclick/rubyinstaller/rubyinstaller-2.2.3-x64.exe
+
+download + install Git:
+https://github.com/git-for-windows/git/releases/download/v2.6.1.windows.1/Git-2.6.1-64-bit.exe
+
+download + install pdftk:
+https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-win-setup.exe
+
+

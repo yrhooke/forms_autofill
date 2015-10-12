@@ -4,4 +4,8 @@ IFS=$'\n\t'
 
 bundle install
 
-# Do any other automated setup that you need to do here
+origin=$(pwd)
+
+cd $(dirname $0)
+ln -s $(which pdftk) pdftk
+cd $origin
