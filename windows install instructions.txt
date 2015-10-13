@@ -1,3 +1,4 @@
+
 windows install instructions:
 
 1.  download + install Ruby (2.2.3):
@@ -39,19 +40,20 @@ ______________
 Use :
 
 
-1. enter the user data between the '' marks in db/user_info.yml
+1. enter the user data between the ‘ ‘ marks in db/user_info.yml - don’t erase the field names, don’t erase the quotation marks - not sure what that’ll do.
 
-2. double click the main.bat file in the project main directory
+2. double click the main.bat file in the project main directory. - it’ll take a couple minutes for the thing to work.
+
+3. file will appear as 1010.pdf in the tmp directory.
 
 
 
 ______________
 
-Update:
+Update (when new versions come out):
 
 1. open command prompt, cd to project's parent directory (forms_autofill)
 
 2. type 'git reset HEAD --hard' - erases all your local changes (so talk to me if you don't wanna do that)
 
 3. type 'git pull'.
-
