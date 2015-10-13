@@ -92,7 +92,7 @@ if __FILE__ == $0
   include FormsAutofill
   
   # main_blank
-  to_fdf
+  main
 end
 
 
