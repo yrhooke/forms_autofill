@@ -6,6 +6,7 @@
 /pkg/
 /spec/reports/
 /tmp/*
+/tmp/bananas.pdf
 *.DS_Store
 /bin/pdftk
 /db/pdftk
