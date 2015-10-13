@@ -51,5 +51,7 @@ Update:
 
 1. open command prompt, cd to project's parent directory (forms_autofill)
 
-2. type 'git pull'.
+2. type 'git reset HEAD --hard' - erases all your local changes (so talk to me if you don't wanna do that)
+
+3. type 'git pull'.
 
