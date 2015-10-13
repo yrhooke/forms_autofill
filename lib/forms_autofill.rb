@@ -2,7 +2,6 @@
 
 require_relative "forms_autofill/version"
 require_relative "utils"
-require_relative "pdfsection"
 require_relative "default"
 require_relative "formcontroller"
 
