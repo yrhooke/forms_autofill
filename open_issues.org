@@ -8,7 +8,7 @@ test whether works for windows
 
 To test:
 
-
+clean install + run on mac /windows
 
 
 Issues:
