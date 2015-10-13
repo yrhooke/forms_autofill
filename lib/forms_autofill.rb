@@ -60,12 +60,25 @@ module FormsAutofill
     controller
   end
 
+  def to_fdf
+    init_defaults
+    info_hash = yamlread $template_path
+    user_info = YAML.load(File.read($user_path))
+    office_info = YAML.load(File.read($defaults_path))
+    controller = FormController.import info_hash
+    controller.fill! office_info
+    controller.fill! user_info
+    output = PdfForms::Fdf.new controller.to_hash
+    output.save_to path_in_proj "../tmp/tmpfdf.fdf"
+  end
+
+
   def main_blank
     init_defaults
     info_hash = yamlread $template_path
     user_info = YAML.load(File.read($user_path))
     office_info = YAML.load(File.read($defaults_path))
-    info_hash[:form_path] = $blank_path
+    # info_hash[:form_path] = $blank_path
     controller = FormController.import info_hash
     controller.fill! office_info
     controller.fill! user_info
@@ -78,8 +91,8 @@ if __FILE__ == $0
 
   include FormsAutofill
   
-  main_blank
-
+  # main_blank
+  to_fdf
 end
 
 
