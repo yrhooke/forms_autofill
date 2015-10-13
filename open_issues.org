@@ -4,7 +4,11 @@ set up virtual machine for windows
 
 test whether works for windows 
  - pdftk installer
- - set up clrf in yaml files
+
+
+To test:
+
+
 
 
 Issues:
@@ -15,3 +19,5 @@ Issues:
 
 - field index is off in yaml, taken from template.pdf 
   __NOTE: indices different in template and in blank
+
+- path name in template_hash.yaml is relative path to project home. unsafe

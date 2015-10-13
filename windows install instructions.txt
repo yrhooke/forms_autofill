@@ -41,9 +41,7 @@ Use :
 
 1. enter the user data between the '' marks in db/user_info.yml
 
-2. in command line type ruby lib/forms_autofill.rb
-
-3. The resulting pdf will be created in tmp/1010.pdf
+2. double click the main.bat file in the project main directory
 
 
 
