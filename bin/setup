@@ -7,5 +7,5 @@ bundle install
 origin=$(pwd)
 
 cd $(dirname $0)
-ln -s $(which pdftk) pdftk
+echo $(which pdftk) > "../db/pdftk"
 cd $origin
