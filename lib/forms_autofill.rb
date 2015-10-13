@@ -68,7 +68,7 @@ module FormsAutofill
     controller = FormController.import info_hash
     controller.fill! office_info
     controller.fill! user_info
-    output = PdfForms::Fdf.new controller.to_hash
+    output = PdfForms::Fdf.new controller.make_hash
     output.save_to path_in_proj "../tmp/tmpfdf.fdf"
   end
 

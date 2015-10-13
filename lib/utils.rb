@@ -74,6 +74,14 @@ module FormsAutofill
     end
   end
       
+  
+  class PdfForms::PdftkWrapper
+
+    def call_pdftk(*args)
+      `pdftk #{args.join(" ")}`
+    end
+  end
+
   def mksection name, fields
     section = Section.new $sample
     section.name = name
