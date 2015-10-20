@@ -1,39 +1,31 @@
 # FormsAutofill
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/forms_autofill`. To experiment with that code, run `bin/console` for an interactive prompt.
+FormsAutofill is an app designed to autofill Pdf forms. It sits on the [Pdf Toolkit](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/) and the [Pdf-Forms](https://github.com/jkraemer/pdf-forms) gem. 
 
-TODO: Delete this and the text above, and describe your gem
+At the moment the app is in demo stage. Further developments include a Sinatra front-end, integration with Excel documents, testing on forms other than the Texas 1010 form, and other additional functionality. 
 
 ## Installation
 
-Add this line to your application's Gemfile:
+To install on windows please follow the Windows install instructions. 
 
-```ruby
-gem 'forms_autofill'
-```
+On Unix like system, clone the repo 
 
-And then execute:
+    $ git clone https://github.com/yrhooke/forms_autofill.git
 
-    $ bundle
+And then run:
 
-Or install it yourself as:
-
-    $ gem install forms_autofill
+    $ bash ./forms_autofill/bin/setup
 
 ## Usage
 
-TODO: Write usage instructions here
+To fill a 1010 form, first fill out the correct user data in the db/user_info.yml and the db/defaults.yml files.
 
-## Development
+Then on windows, just tap the main.bat file in the apps home directory. On Unix, run 
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+    $ ruby lib/forms_autofill.rb
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/forms_autofill. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
-
+The result will be created in the tmp folder.
 
 ## License
 
