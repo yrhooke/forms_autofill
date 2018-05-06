@@ -1,5 +1,7 @@
 # FormsAutofill
 
+## Note: Not maintained since late 2015
+
 FormsAutofill is an app designed to autofill Pdf forms. It sits on the [Pdf Toolkit](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/) and the [Pdf-Forms](https://github.com/jkraemer/pdf-forms) gem. 
 
 At the moment the app is in demo stage. Further developments include a Sinatra front-end, integration with Excel documents, testing on forms other than the Texas 1010 form, and other additional functionality. 
